@@ -4,19 +4,15 @@ import tensorflow as tf
 from model import Model
 import imagePreprocesser
 
-trainWithResNet=True
 
-learn_rate=0.00001
-imgsize=64#256
+learn_rate=0.001
+imgsize=128#256
 epoches=1000
 batch_size=25#125
 classes=10
 
 path="images"
 x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize,classes)
-
-if trainWithResNet:
-  imagePreprocesser.loadAsTFFormat(x_train, x_test, y_train, y_test, imgsize)
 
 #need the variable batch_size, classes
 trainData=x_train.shape[0]
