@@ -57,10 +57,10 @@ def loadPrepareImages(path,imgsize, classes):
         Y.append(num_class)
       
       num_class+=1
-        
+
   #Convert lists into a numpy
   X=np.asarray(X)
-  Y=np.asarray(Labels)
+  Y=np.asarray(Y)
   
   x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.3)
 
