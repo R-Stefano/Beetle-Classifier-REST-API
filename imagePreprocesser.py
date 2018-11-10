@@ -33,16 +33,16 @@ def loadPrepareImages(path,imgsize):
   files = glob.glob (path)
 
   tmpfolder = ""
-  firstSlash = 37
-  lastSlash = 0
+
   i = -1
   for myFile in files:   
       image = cv2.imread(myFile)
       imgList.append(image)
 
-      tmp1=myFile[37:]
-      folderlength = tmp1.find('/')
-      folderName = tmp1[:folderlength] 
+      #find where is the second /
+      folderlength = myFile.find('/',10,-1)
+      #obtain the foldername cropping the file path string
+      folderName = myFile[len("images/"):folderlength] 
 
       if tmpfolder != folderName:
         i+=1

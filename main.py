@@ -9,7 +9,7 @@ imgsize=256
 epoches=1000
 batch_size=125
 
-path="./beetle-image-classification/images/*/*.jpg"
+path="images/*/*.jpg"
 x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize)
 
 #need the variable batch_size, classes
