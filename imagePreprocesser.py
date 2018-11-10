@@ -64,8 +64,8 @@ def loadData(path,imgsize, classes):
 
 def augmentData(batchIn,imgsize):
   out=np.zeros((batchIn.shape))
-  images_aug = seq.augment_images(np.uint8(out))
+  images_aug = seq.augment_images(np.uint8(batchIn))
 
   for idx, img in enumerate(images_aug):
     out[idx]=cv2.resize(img, (imgsize,imgsize)) 
-  return out
+  return out/255.

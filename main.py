@@ -6,7 +6,7 @@ import imagePreprocesser
 
 
 learn_rate=0.00001
-imgsize=128#256
+imgsize=96#256
 epoches=1000
 batch_size=25#125
 classes=10
