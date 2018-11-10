@@ -2,7 +2,7 @@
 
 from keras.models import Sequential
 from keras.optimizers import SGD
-from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Dropout, Flatten, merge, Reshape, Activation
+from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Dropout, Flatten, Concatenate, Reshape, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras import backend as K
@@ -36,7 +36,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
     x = Convolution2D(nb_filter3, 1, 1, name=conv_name_base + '2c')(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
-    x = merge([x, input_tensor], mode='sum')
+    x = Concatenate([x, input_tensor], axis=-1, mode='sum')
     x = Activation('relu')(x)
     return x
 
@@ -74,7 +74,7 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
                              name=conv_name_base + '1')(input_tensor)
     shortcut = BatchNormalization(axis=bn_axis, name=bn_name_base + '1')(shortcut)
 
-    x = merge([x, shortcut], mode='sum')
+    x = Concatenate([x, shortcut], axis=-1, mode='sum')
     x = Activation('relu')(x)
     return x
 
