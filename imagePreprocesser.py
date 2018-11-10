@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import glob
+import os
 import imgaug as ia
 from imgaug import augmenters as iaa
 from sklearn.model_selection import train_test_split
@@ -28,25 +29,19 @@ def loadPrepareImages(path,imgsize):
   Labels = []
   Folders = []
 
-  files = glob.glob (path)
-
-  tmpfolder = ""
-
-  i = -1
-  for myFile in files:   
-      image = cv2.imread(myFile)
-      imgList.append(image)
-
-      #find where is the second /
-      folderlength = myFile.find('/',10,-1)
-      #obtain the foldername cropping the file path string
-      folderName = myFile[len("images/"):folderlength] 
-
-      if tmpfolder != folderName:
-        i+=1
-        tmpfolder = folderName
-        Folders.append(tmpfolder)
-      Labels.append(i)
+  num_class=0
+  for folder in os.listdir(path):
+    classImages=[]
+    classLables=[]
+    for img in os.listdir(path+"/"+folder):
+      image = cv2.imread(path+"/"+folder+"/"+img)
+      classImages.append(image)
+      classLables.append(num_class)
+    
+    if len(classImages)>20:
+      imgList.extend(classImages)
+      Labels.extend(classLables)
+      num_class+=1
   
   #Store the unique images into a single matrix of shape [images,256,256,3]
   numberUniqueImages=len(imgList)
@@ -60,7 +55,7 @@ def loadPrepareImages(path,imgsize):
   
   x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.1)
   
-  return x_train,x_test, y_train, y_test
+  return x_train,x_test, y_train, y_test, num_class
   
 def augmentData(batch):
   out=np.zeros((batch.shape))

@@ -22,17 +22,19 @@ class Model():
   
   def buildNetwork(self):
     self.input=tf.placeholder(tf.float32, shape=[None, self.imgsize, self.imgsize, 3], name="input_image")
+    self.keepProb=tf.placeholder(tf.float32, name="dropout_keepProb")
     
     x=self.convolution(self.input, 32, 3, 1)
-    x=self.convolution(x, 64, 3, 2)
-    x=self.convolution(x, 128, 3, 2)
+    x=self.convolution(x, 64, 3, 1)
+    x=self.convolution(x, 128, 3, 1)
+    x=tf.layers.max_pooling2d(x, 2, 2)
     x=self.convolution(x, 256, 3, 2)
     x=self.convolution(x, 512, 3, 2)
    
     shape=x.get_shape().as_list()
     flattenVec=tf.reshape(x, (-1, shape[1]*shape[2]*shape[3]))
     
-    dropout=tf.layers.dropout(flattenVec, rate=0.5)
+    dropout=tf.layers.dropout(flattenVec, rate=self.keepProb)
     x=tf.layers.dense(dropout, 512, activation=tf.nn.leaky_relu)
     self.logits=tf.layers.dense(x, self.num_classes, activation=None)
   

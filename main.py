@@ -9,12 +9,11 @@ imgsize=256
 epoches=1000
 batch_size=125
 
-path="images/*/*.jpg"
-x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize)
+path="images"
+x_train, x_test, y_train, y_test, classes=imagePreprocesser.loadPrepareImages(path,imgsize)
 
 #need the variable batch_size, classes
 trainData=x_train.shape[0]
-classes=36
 
 global_step=0
 tf.reset_default_graph()
@@ -30,7 +29,7 @@ with tf.Session() as sess:
     
     #compute the accuracy
     print(">>Computing accuracy..")
-    acc, summ=sess.run([model.accuracy, model.accSummary], feed_dict={model.input: x_test, model.labels: y_test})
+    acc, summ=sess.run([model.accuracy, model.accSummary], feed_dict={model.input: x_test, model.labels: y_test, model.keepProb: 1})
     file.add_summary(summ, global_step)   
 
     print(">>Training model..")
@@ -40,10 +39,12 @@ with tf.Session() as sess:
       batchInput=x_train[startB:endB]
       batchLabels=y_train[startB:endB]
 
+      print(batchInput.shape)
+
       #Data augmentation
       batchInput=imagePreprocesser.augmentData(batchInput)
 
-      _, summ=sess.run([model.opt, model.stepSummary], feed_dict={model.input: batchInput, model.labels: batchLabels})
+      _, summ=sess.run([model.opt, model.stepSummary], feed_dict={model.input: batchInput, model.labels: batchLabels, model.keepProb: 0.5})
 
       file.add_summary(summ, global_step)
       global_step+=1
