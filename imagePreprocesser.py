@@ -5,7 +5,7 @@ import os
 import imgaug as ia
 from imgaug import augmenters as iaa
 from sklearn.model_selection import train_test_split
-
+import tensorflow as tf
 #sometimes 20%
 sometimes_2= lambda aug: iaa.Sometimes(0.2, aug)
 #sometimes 50%
@@ -74,7 +74,7 @@ seq = iaa.SomeOf((0,3),[
     )
 ], random_order=True) # apply augmenters in random order
 
-def loadPrepareImages(path,imgsize, classes):
+def loadData(path,imgsize, classes):
   X = []
   Y = []
   Folders = []
@@ -94,10 +94,19 @@ def loadPrepareImages(path,imgsize, classes):
   X=np.asarray(X)
   Y=np.asarray(Y)
   
+  newX=X.copy()
+
   x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.15)
 
-  return x_train,x_test, y_train, y_test
-  
+  X=x_train.copy()/255.
+  Y=y_train.copy()
+  for i in range(5):
+    aug=augmentData(x_train, imgsize)
+    X=np.concatenate((X, aug), axis=0)
+    Y=np.concatenate((Y, y_train))
+
+  return X,x_test, Y, y_test
+
 def augmentData(batch,imgsize):
   out=np.zeros((batch.shape))
   images_aug = seq.augment_images(np.uint8(batch))
