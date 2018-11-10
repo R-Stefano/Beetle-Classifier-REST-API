@@ -5,14 +5,16 @@ from model import Model
 import imagePreprocesser
 
 learn_rate=0.00001
-imgsize=256
+imgsize=64#256
 epoches=1000
-batch_size=125
+batch_size=25#125
 classes=10
 
 path="images"
 x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize,classes)
 
+x_test=x_test[:150]
+y_test=y_test[:150]
 
 #need the variable batch_size, classes
 trainData=x_train.shape[0]
@@ -44,7 +46,7 @@ with tf.Session() as sess:
       print(batchInput.shape)
 
       #Data augmentation
-      batchInput=imagePreprocesser.augmentData(batchInput)
+      batchInput=imagePreprocesser.augmentData(batchInput,imgsize)
 
       _, summ=sess.run([model.opt, model.stepSummary], feed_dict={model.input: batchInput, model.labels: batchLabels, model.keepProb: 0.5})
 
