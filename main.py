@@ -12,6 +12,7 @@ batch_size=125
 path="images"
 x_train, x_test, y_train, y_test, classes=imagePreprocesser.loadPrepareImages(path,imgsize)
 
+
 #need the variable batch_size, classes
 trainData=x_train.shape[0]
 
