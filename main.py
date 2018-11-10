@@ -8,9 +8,10 @@ learn_rate=0.00001
 imgsize=256
 epoches=1000
 batch_size=125
+classes=10
 
 path="images"
-x_train, x_test, y_train, y_test, classes=imagePreprocesser.loadPrepareImages(path,imgsize)
+x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize,classes)
 
 
 #need the variable batch_size, classes

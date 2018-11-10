@@ -42,38 +42,29 @@ seq=iaa.SomeOf((1,3),
                 ], random_order=True)
 
 
-def loadPrepareImages(path,imgsize):
-  imgList = []
-  Labels = []
+def loadPrepareImages(path,imgsize, classes):
+  X = []
+  Y = []
   Folders = []
 
   num_class=0
   for folder in os.listdir(path):
-    classImages=[]
-    classLables=[]
-    for img in os.listdir(path+"/"+folder):
-      image = cv2.imread(path+"/"+folder+"/"+img)
-      classImages.append(image)
-      classLables.append(num_class)
-    
-    if len(classImages)>50:
-      imgList.extend(classImages)
-      Labels.extend(classLables)
+    if(num_class<classes):
+      for img in os.listdir(path+"/"+folder):
+        image = cv2.imread(path+"/"+folder+"/"+img)
+        image=cv2.resize(image, (imgsize,imgsize))
+        X.append(image)
+        Y.append(num_class)
+      
       num_class+=1
-  
-  #Store the unique images into a single matrix of shape [images,256,256,3]
-  numberUniqueImages=len(imgList)
-  X=np.zeros((numberUniqueImages,imgsize,imgsize,3))
-
-  for idx, value in enumerate(imgList):
-    X[idx] = cv2.resize(value, (imgsize,imgsize))
-  
-  #Convert list of lables into a numpy vector
+        
+  #Convert lists into a numpy
+  X=np.asarray(X)
   Y=np.asarray(Labels)
   
   x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.3)
-  print("\nNumber classes:",num_class)
-  return x_train,x_test, y_train, y_test, num_class
+
+  return x_train,x_test, y_train, y_test
   
 def augmentData(batch):
   out=np.zeros((batch.shape))
