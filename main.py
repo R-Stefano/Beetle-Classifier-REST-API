@@ -40,8 +40,6 @@ with tf.Session() as sess:
       batchInput=x_train[startB:endB]
       batchLabels=y_train[startB:endB]
 
-      print(batchInput.shape)
-
       #Data augmentation
       batchInput=imagePreprocesser.augmentData(batchInput,imgsize)
 

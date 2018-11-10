@@ -6,6 +6,7 @@ class Model():
     self.lr=learning_rate
     self.imgsize=imgsize
     self.num_classes=classes
+    self.regularizer=layer.l2_regularizer(scale=0.0001)
     
     self.buildNetwork()
     self.buildTraining()
@@ -16,12 +17,13 @@ class Model():
   def convolution(self,x, num_out, kernel, stride):
     x=layer.conv2d(x, num_out, kernel, stride,
                    normalizer_fn=tf.layers.batch_normalization,
+                   weights_regularizer=self.regularizer,
                    activation_fn=tf.nn.leaky_relu)
     return x
 
   def residualBlock(self, x, num_out, kernel, stride):
     inp=self.convolution(x, num_out, kernel, stride)
-    inp=self.convolution(inp, num_out*2, kernel, stride)
+    inp=self.convolution(inp, num_out, kernel, stride)
     return inp+x
    
   
