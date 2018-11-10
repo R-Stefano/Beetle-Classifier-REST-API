@@ -16,7 +16,7 @@ convolveMatrix = np.array([[0, -1, 0],
                    [-1, 4, -1],
                    [0, -1, 0]])
 #Apply between 0 and 2 of the following augmentations
-seq=iaa.SomeOf((1,3),
+seq=iaa.SomeOf((0,2),
                 [
                     iaa.Fliplr(0.5),#horizontally flip 50% of the images
                     iaa.Flipud(0.5),#vertically flip the images
@@ -62,7 +62,7 @@ def loadPrepareImages(path,imgsize, classes):
   X=np.asarray(X)
   Y=np.asarray(Y)
   
-  x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.3)
+  x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.15)
 
   return x_train,x_test, y_train, y_test
   

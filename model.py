@@ -18,6 +18,11 @@ class Model():
                    normalizer_fn=tf.layers.batch_normalization,
                    activation_fn=tf.nn.leaky_relu)
     return x
+
+  def residualBlock(self, x, num_out, kernel, stride):
+    inp=self.convolution(x, num_out, kernel, stride)
+    inp=self.convolution(inp, num_out*2, kernel, stride)
+    return inp+x
    
   
   def buildNetwork(self):
@@ -26,9 +31,11 @@ class Model():
     
     x=self.convolution(self.input, 32, 3, 1)
     x=self.convolution(x, 64, 3, 1)
-    x=self.convolution(x, 128, 3, 1)
     x=tf.layers.max_pooling2d(x, 2, 2)
-    x=self.convolution(x, 256, 3, 2)
+    x=self.convolution(x, 128, 3, 1)
+    x=self.residualBlock(x, 128, 3, 1)
+    x=self.residualBlock(x, 128, 3, 1)
+    x=self.residualBlock(x, 256, 3, 1)
     x=self.convolution(x, 512, 3, 2)
    
     shape=x.get_shape().as_list()
@@ -50,8 +57,8 @@ class Model():
     self.opt=optimizer.minimize(self.meanE)
   
   def buildTestAccuracy(self):
-    self.isequal=tf.math.equal(tf.math.argmax(self.hotEncoded, axis=1),tf.math.argmax(self.logits, axis=1))
-    self.accuracy=tf.reduce_mean(tf.cast(self.isequal, tf.int32))
+    self.isequal=tf.cast(tf.math.equal(tf.math.argmax(self.hotEncoded, axis=1),tf.math.argmax(self.logits, axis=1)), tf.float32)
+    self.accuracy=tf.reduce_mean(self.isequal)
   
   def buildTensorboard(self):
     self.stepSummary=tf.summary.merge([tf.summary.scalar("loss", self.meanE)])
