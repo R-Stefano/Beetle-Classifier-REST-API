@@ -37,6 +37,7 @@ class Model():
     x=self.convolution(x, 128, 3, 1)
     x=self.residualBlock(x, 128, 3, 1)
     x=self.residualBlock(x, 128, 3, 1)
+    x=self.convolution(x, 256, 3, 2)
     x=self.residualBlock(x, 256, 3, 1)
     x=self.convolution(x, 512, 3, 2)
    
