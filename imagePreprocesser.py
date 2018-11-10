@@ -1,8 +1,6 @@
 import numpy as np
-import time
 import cv2
 import glob
-import keras
 import imgaug as ia
 from imgaug import augmenters as iaa
 from sklearn.model_selection import train_test_split

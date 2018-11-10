@@ -48,7 +48,7 @@ class Model():
     self.opt=optimizer.minimize(self.meanE)
   
   def buildTestAccuracy(self):
-    self.acc, self.t=tf.metrics.accuracy(labels=tf.argmax(self.hotEncoded), predictions=tf.argmax(self.logits), name="accuracy")   
+    self.acc, self.t=tf.metrics.accuracy(labels=tf.math.argmax(self.hotEncoded, axis=1), predictions=tf.math.argmax(self.logits, axis=1), name="accuracy")   
     
     # Isolate the variables stored behind the scenes by the metric operation
     running_vars = tf.get_collection(tf.GraphKeys.LOCAL_VARIABLES, scope="accuracy")
