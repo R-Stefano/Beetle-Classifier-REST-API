@@ -2,14 +2,14 @@ import numpy as np
 import time
 import tensorflow as tf
 from model import Model
-import imagePreprocesser import *
+import imagePreprocesser
 
 learn_rate=0.00001
 imgsize=256
 epoches=1000
 batch_size=125
 
-path=""
+path="../beetle-image-classification/images/*/*.jpg"
 x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsize)
 
 #need the variable batch_size, classes
@@ -26,6 +26,7 @@ with tf.Session() as sess:
   sess.run(model.init_acc_metrics)
 
   file=tf.summary.FileWriter('tensorboard/', sess.graph)
+  saver=tf.train.Saver()
   for epoch in range(epoches):
     start = time.time()
     
@@ -45,14 +46,13 @@ with tf.Session() as sess:
       #Data augmentation
       batchInput=imagePreprocesser.augmentData(batchInput)
 
-      print("Check that the values are still between o and 1")
-      print(np.min(batchInput))
-      print(np.max(batchInput))
-
       _, summ=sess.run([model.opt, model.stepSummary], feed_dict={model.input: batchInput, model.labels: batchLabels})
 
       file.add_summary(summ, global_step)
       global_step+=1
+      
+    if epoch%25==0:
+      saver.save(sess, "agentBackup/graph.ckpt")
       
     end = time.time()
     elapsed = end - start

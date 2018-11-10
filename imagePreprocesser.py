@@ -65,6 +65,10 @@ def loadPrepareImages(path,imgsize):
   return x_train,x_test, y_train, y_test
   
 def augmentData(batch):
-    images_aug = seq.augment_images(np.uint8(batch))
+  out=np.zeros((batch.shape))
+  images_aug = seq.augment_images(np.uint8(batch))
+    
+  for idx,el in enumerate(images_aug):
+    out[idx]=cv2.resize(el, (256,256))
        
-    return images_aug/255.
+  return out/255.
