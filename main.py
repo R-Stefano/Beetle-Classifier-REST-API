@@ -5,7 +5,7 @@ from model import Model
 import imagePreprocesser
 
 
-learn_rate=0.001
+learn_rate=0.00001
 imgsize=128#256
 epoches=1000
 batch_size=25#125
