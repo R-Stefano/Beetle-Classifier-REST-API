@@ -56,7 +56,7 @@ def loadPrepareImages(path,imgsize):
       classImages.append(image)
       classLables.append(num_class)
     
-    if len(classImages)>20:
+    if len(classImages)>50:
       imgList.extend(classImages)
       Labels.extend(classLables)
       num_class+=1
@@ -71,8 +71,8 @@ def loadPrepareImages(path,imgsize):
   #Convert list of lables into a numpy vector
   Y=np.asarray(Labels)
   
-  x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.1)
-  
+  x_train,x_test, y_train, y_test=train_test_split(X,Y,test_size=0.3)
+  print("\nNumber classes:",num_class)
   return x_train,x_test, y_train, y_test, num_class
   
 def augmentData(batch):
