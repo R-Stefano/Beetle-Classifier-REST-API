@@ -48,14 +48,9 @@ class Model():
     self.opt=optimizer.minimize(self.meanE)
   
   def buildTestAccuracy(self):
-    self.acc, self.t=tf.metrics.accuracy(labels=tf.math.argmax(self.hotEncoded, axis=1), predictions=tf.math.argmax(self.logits, axis=1), name="accuracy")   
-    
-    # Isolate the variables stored behind the scenes by the metric operation
-    running_vars = tf.get_collection(tf.GraphKeys.LOCAL_VARIABLES, scope="accuracy")
-
-    # Define initializer to initialize/reset running variables
-    self.init_acc_metrics= tf.variables_initializer(var_list=running_vars)
+    self.isequal=tf.math.equal(tf.math.argmax(self.hotEncoded, axis=1),tf.math.argmax(self.logits, axis=1))
+    self.accuracy=tf.reduce_mean(tf.cast(self.isequal, tf.int32))
   
   def buildTensorboard(self):
     self.stepSummary=tf.summary.merge([tf.summary.scalar("loss", self.meanE)])
-    self.accSummary=tf.summary.merge([tf.summary.scalar("accuracy", self.acc)])
+    self.accSummary=tf.summary.merge([tf.summary.scalar("accuracy", self.accuracy)])

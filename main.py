@@ -16,14 +16,12 @@ x_train, x_test, y_train, y_test=imagePreprocesser.loadPrepareImages(path,imgsiz
 trainData=x_train.shape[0]
 classes=36
 
-
 global_step=0
 tf.reset_default_graph()
 with tf.Session() as sess:
   model=Model(learn_rate, imgsize,classes)
   
   sess.run(tf.global_variables_initializer())
-  sess.run(model.init_acc_metrics)
 
   file=tf.summary.FileWriter('tensorboard/', sess.graph)
   saver=tf.train.Saver()
@@ -32,9 +30,8 @@ with tf.Session() as sess:
     
     #compute the accuracy
     print(">>Computing accuracy..")
-    _, summ=sess.run([model.acc, model.accSummary], feed_dict={model.input: x_test, model.labels: y_test})
-    file.add_summary(summ, global_step)
-    
+    acc, summ=sess.run([model.accuracy, model.accSummary], feed_dict={model.input: x_test, model.labels: y_test})
+    file.add_summary(summ, global_step)   
 
     print(">>Training model..")
     for startB in range(0, trainData, batch_size):
