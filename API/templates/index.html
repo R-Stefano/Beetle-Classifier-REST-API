@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Find your Beetle</title>
+</head>
+<body>
+    <div id="header">
+        <h1>BEETLE FINDER</h1> <img id="logo" src="static/structureImages/logoTUI.png" alt="">
+	</div>
+	<div id="content">
+			<div id="eval-box">
+				<h1>Test your Beetle</h1>
+				<form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+						
+					<input type='file' id="upload" name="photo" />
+	
+					<input type="submit">
+				</form>
+	
+				<div id="result-box">
+					<img id="result-img" src="static/{{ image }}" alt="">
+	
+					<p>{{ specie }}</p>
+				</div>
+			
+			</div>
+		</div>
+</body>
+
+<style>
+    body{
+        padding: 0;
+        margin:0;
+		background: url("static/structureImages/background.jpg");
+		background-size:cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		height: -webkit-fill-available;
+    }
+
+    div#header{
+        background-color: #129fca;
+        display: flex;
+        justify-content: space-between;
+		height: 80px;
+		padding: 0.5em;
+    }
+
+	div#header h1{
+		letter-spacing: 0.2em;
+		color: white;
+		font-family: cursive;
+		margin-left: 1em;
+	}
+
+	div#header img {
+		height: 100%;
+		margin-right: 2em;
+	}
+
+    div#content{
+        width: 80%;
+        margin:auto;
+        text-align: center;
+    }
+
+	div#eval-box{
+		width: fit-content;
+		margin: auto;
+		background-color: rgba(239, 239, 239, 0.57);
+		margin-top:6em;
+	}
+
+    div#content h1{
+        font-size:3em;
+		padding-top: 0.5em;
+    }
+
+	div#result-box{
+		padding: 2em 5em;
+		width: fit-content;
+		margin: auto;
+		margin-top:2em;
+
+	}
+
+	div#result-box img#result-img {
+		width: 300px;
+	}
+
+	div#result-box p{
+		font-size: 2em;
+	}
+</style>
+</html>

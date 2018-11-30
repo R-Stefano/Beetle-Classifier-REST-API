@@ -1,6 +1,6 @@
 # REST API - Beetle Classifier 
 <p align="center">
-  <img width="600" height="300" src="">
+  <img width="600" height="300" src="https://github.com/R-Stefano/beetleDetection/blob/master/res-img.png">
 </p>
 
 # Introduction
