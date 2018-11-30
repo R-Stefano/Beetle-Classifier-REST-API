@@ -1,4 +1,14 @@
-# Classify Beetle species using pre-trained Resnet
+# REST API - Beetle Classifier 
+<p align="center">
+  <img width="600" height="300" src="">
+</p>
+
+# Introduction
+Every year, TUI organizes an Hackathon of 24 hours in our University. This year, one of the scenarios required to develop an application to classify different species of Beetle using only images that the guests provided. 
+
+We decided to develop a REST API using Flask that runs an Image classifier fine-tuned on a *MobileNet V2*. The model achieved 80% accuracy on test dataset on 10 different species. 
+
+# Guideline
 ## 0 - Setup
 Follow the guide [Here](https://github.com/tensorflow/models/tree/master/research/slim#Install)
 
@@ -63,7 +73,7 @@ You can also specify:
 * --save_summaries_secs: The frequency which the tensorboard logs are saved, in seconds.
 * --clone_on_cpu: Set to True to run on cpu if you don't have a gpu
 
-***Note:*** It automically applies data augmentation. In fact, passing as *model_name=mobilenet_v1*,
+***Note:*** It automically applies data augmentation. In fact, passing as *model_name=mobilenet_v2_140*,
 it uses *models/research/slim/preprocessing/inception_preprocessing.py* to augment the data.
 
 ## 5 - Run the evaluation
@@ -75,7 +85,7 @@ python eval_image_classifier.py \
     --dataset_dir=data/ \
     --dataset_name=beetle \
     --dataset_split_name=test \
-    --model_name=mobilenet_v1 \
+    --model_name=mobilenet_v2_140 \
     --eval_dir=myModel/eval/ 
 ```
 
@@ -92,3 +102,12 @@ python export_graph.py \
 ```
 
 It will create a file called **exportedModel.pb** which is the frozen graph.
+
+## 7 - Run the API
+Put the image that you want to predict inside **static** folder. Then, serve the Flask API calling
+```
+python API.py
+```
+
+Open your browser and go to ```localhost:5000/upload```.
+
